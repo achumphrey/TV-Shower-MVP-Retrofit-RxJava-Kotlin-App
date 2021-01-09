@@ -101,8 +101,8 @@ class MainActivity : AppCompatActivity(), ViewInterface {
         tvNumber.text = date
 
         Picasso.get()
-                .load(data?.image?.original)
-                .resize(400,700)
+                .load(data?.image?.medium)
+                .resize(210,295)
                 .error(R.drawable.ic_launcher_background)
                 .into(imgTvView)
 
