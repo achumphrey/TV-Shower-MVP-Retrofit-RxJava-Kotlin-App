@@ -8,7 +8,7 @@ import io.reactivex.Observer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-class DataPresenter(_view: ViewInterface): PresenterInterface {
+class DataPresenter(_view: ViewInterface) : PresenterInterface {
 
     var view: ViewInterface? = _view
     var compositeDisposable = CompositeDisposable()
@@ -20,26 +20,32 @@ class DataPresenter(_view: ViewInterface): PresenterInterface {
     override fun loadDataFromRepo(user: String) {
 
         DataReposImpl().callNetwork(user)
-            .subscribe(object: Observer<DataModel> {
+            .subscribe(dataModelObserver())
+    }
 
-                override fun onComplete() {
-                }
+    private fun dataModelObserver(): Observer<DataModel> {
 
-                override fun onSubscribe(d: Disposable) {
-                    compositeDisposable.add(d)
-                }
+        return object : Observer<DataModel> {
 
-                override fun onNext(t: DataModel) {
-                    view?.loadDataModel(t)
-                }
+            override fun onComplete() {
+            }
 
-                override fun onError(e: Throwable) {
-                    view?.showError(e.message.toString())
-                }
-            })
+            override fun onSubscribe(d: Disposable) {
+                compositeDisposable.add(d)
+            }
+
+            override fun onNext(t: DataModel) {
+                view?.loadDataModel(t)
+            }
+
+            override fun onError(e: Throwable) {
+                view?.showError(e.message.toString())
+            }
+        }
     }
 
     override fun onDestroy() {
-        view = null
+       view = null
+       compositeDisposable.clear()
     }
 }

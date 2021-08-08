@@ -14,6 +14,7 @@ import com.example.tvshowermvpretrofitrxjavakotlinapp.presenter.DataPresenter
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.view.*
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -37,6 +38,10 @@ class MainActivity : AppCompatActivity(), ViewInterface {
         dataPresenter = DataPresenter(this)
 
         edName.requestFocus()
+
+        clearText.setOnClickListener {
+            edName.text.clear()
+        }
 
         btSearch.setOnClickListener {
             it.hideKeyboard()
